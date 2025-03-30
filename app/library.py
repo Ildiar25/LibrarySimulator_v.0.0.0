@@ -1,8 +1,8 @@
 from data.file_manager import FileManager
 from data.settings import BOOKS_FILENAME, CLIENTS_FILENAME
 
-from app.models.book import Book
-from app.models.client import Client
+from .models.book import Book
+from .models.client import Client
 
 
 class Library:
@@ -27,8 +27,16 @@ class Library:
             )
             self.book_list.append(book)
 
-    def add_book(self, book: Book) -> None:
-        self.book_list.append(book)
+    def add_book(self, book: dict[str, int | str]) -> None:
+        self.book_list.append(
+            Book(
+                isbn=book["isbn"],
+                title=book["title"].capitalize(),
+                author=book["author"].title(),
+                genre=book["genre"].title(),
+                status=book["status"].upper()
+            )
+        )
 
     def look_for_book(self, isbn: int) -> Book:
         for book in self.book_list:
@@ -54,8 +62,16 @@ class Library:
             )
             self.client_list.append(client)
 
-    def add_client(self, client: Client) -> None:
-        self.client_list.append(client)
+    def add_client(self, client: dict[str, str | int | list[int]]) -> None:
+        self.client_list.append(
+            Client(
+                ident=client["ident"],
+                name=client["name"].title(),
+                surname=client["surname"].title(),
+                max_allowed=client["max_allowed"],
+                client_books=client["client_books"]
+            )
+        )
 
     def look_for_client(self, ident: str) -> Client:
         for client in self.client_list:
@@ -68,20 +84,3 @@ class Library:
         for client in self.client_list:
             client_data.append(client.prepare_client())
         FileManager.save_data(client_data, CLIENTS_FILENAME)
-
-
-def main():
-    library = Library()
-    library.load_books()
-    library.load_clients()
-    the_book = library.look_for_book(982769896)
-    the_client = library.look_for_client("19095131W")
-    library.save_clients()
-    library.save_books()
-
-    print(the_book)
-    print(the_client)
-
-
-if __name__ == '__main__':
-    main()
