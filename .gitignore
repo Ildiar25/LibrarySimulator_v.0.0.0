@@ -14,7 +14,6 @@
 
 # Database files
 **/*.db
-**/*.csv
 **/*.json
 
 # Logs

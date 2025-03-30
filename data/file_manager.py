@@ -55,10 +55,10 @@ class FileManager:
 
 
 def main():
-    test = FileManager.load_data("books.json")
+    test = FileManager.load_data("clients.json")
     for dic in test.data:
 
-        print(dic["title"])
+        print(dic["ident"])
 
 
 if __name__ == '__main__':
