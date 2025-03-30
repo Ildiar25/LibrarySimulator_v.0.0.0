@@ -51,14 +51,29 @@ class FileManager:
 
     @classmethod
     def save_data(cls, data: list[dict[str, str | int]], filename: str) -> None:
-        pass
+        data_dict = {"data": data}
+        try:
+            with open(Path(__file__).parent.joinpath(f"database/{filename}"), "w", encoding="utf-8") as data_file:
+                json_data = json.dumps(data_dict, indent=4)
+                data_file.write(json_data)
+
+        except PermissionError as not_allowed:
+            print(
+                f"\n[{type(not_allowed).__name__}] #### "
+                f"¡No se tienen permisos para sobreescribir el archivo {repr(filename)}!"
+            )
+        except Exception as unknown:
+            print(
+                f"\n[{type(unknown).__name__}] #### "
+                f"¡Ha ocurrido un error al tratar de sobreescribir el archivo {repr(filename)}!"
+            )
 
 
 def main():
-    test = FileManager.load_data("clients.json")
-    for dic in test.data:
+    test = FileManager.load_data("books.json")
 
-        print(dic["ident"])
+    print(f"{type(test.data)}\n", test.data)
+    FileManager.save_data(test.data, "books.json")
 
 
 if __name__ == '__main__':
