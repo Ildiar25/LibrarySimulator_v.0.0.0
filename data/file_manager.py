@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Any
 import json
 import os
 
@@ -67,15 +66,3 @@ class FileManager:
                 f"\n[{type(unknown).__name__}] #### "
                 f"¡Ha ocurrido un error al tratar de sobreescribir el archivo {repr(filename)}!"
             )
-
-
-def main():
-    test = FileManager.load_data("books.json")
-
-    print(f"{type(test.data)}\n", test.data)
-    FileManager.save_data(test.data, "books.json")
-
-
-if __name__ == '__main__':
-    main()
-
