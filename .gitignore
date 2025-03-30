@@ -12,6 +12,9 @@
 .idea/vcs.xml
 .idea/workspace.xml
 
+# PyCache
+__pychache__/
+
 # Database files
 **/*.db
 **/*.json
