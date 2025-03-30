@@ -39,10 +39,16 @@ class Book:
         """
         self.status = "reservado"
 
-    def __repr__(self) -> str:
-        return f"{repr(self.title)} por {repr(self.author)} ({self.isbn})"
+    def prepare_book(self) -> dict[str, str]:
+        return {
+            "isbn": self.isbn,
+            "title": self.title,
+            "author": self.author,
+            "genre": self.genre,
+            "status": self.status
+        }
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return (
             f"<class Book("
             f"isbn={repr(self.isbn)}, "
@@ -52,3 +58,6 @@ class Book:
             f"status={repr(self.status)}"
             f")>"
         )
+
+    def __str__(self) -> str:
+        return f"{repr(self.title)} por {repr(self.author)} (ISBN: {self.isbn})"

@@ -4,7 +4,7 @@ import os
 
 
 class FileManager:
-    def __init__(self, data: list[dict[str, str | int]] | None = None) -> None:
+    def __init__(self, data: list[dict[str, str | int | list[int]]] | None = None) -> None:
         self.data = data
 
     @classmethod

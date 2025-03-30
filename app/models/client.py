@@ -61,7 +61,16 @@ class Client:
 
         return False
 
-    def __str__(self) -> str:
+    def prepare_client(self) -> dict[str, str | int | list[int]]:
+        return {
+            "ident": self.ident,
+            "name": self.name,
+            "surname": self.surname,
+            "max_allowed": self.max_allowed,
+            "client_books": self.client_books
+        }
+
+    def __repr__(self) -> str:
         return (
             f"<class Client("
             f"ident={repr(self.ident)}, "
@@ -70,4 +79,10 @@ class Client:
             f"max_allowed={repr(self.max_allowed)}, "
             f"client_books={repr(self.client_books)}"
             f")>"
+        )
+
+    def __str__(self) -> str:
+        return (
+            f"{repr(self.name + ' ' + self.surname)} con IDENT {repr(self.ident)} "
+            f"(Posee {len(self.client_books)} libros)"
         )
