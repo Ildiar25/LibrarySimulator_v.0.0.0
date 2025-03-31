@@ -1,27 +1,46 @@
-from rich.console import Console, Style
+from rich.console import Console
+from rich.table import box, Table
+
+from app.library import Library
+
+from .books import books
+
+
+def __create_table() -> Table:
+    table = Table(width=150, box=box.DOUBLE_EDGE)
+
+    table.title = "____________________ Secciones Disponibles ____________________"
+    table.add_column("LIBROS", style="magenta")
+    table.add_column("CLIENTES", style="magenta")
+    table.add_column("SOLICITUD", style="magenta")
+    table.add_column("SALIR", style="magenta")
+
+    table.add_row(
+        "Permite trabajar en la sección de libros. Puedes añadir, editar o eliminar entradas.",
+        "Permite trabajar en la sección de clientes. Puedes añadir, editar o eliminar usuarios.",
+        "Permite trabajar con la base de datos para realizar solicitudes CRUD.",
+        "Comando para salir de la aplicación."
+    )
+
+    return table
 
 
 def main_menu() -> None:
+    console = Console(width=150)
+    library = Library()
 
-    console = Console()
-    danger_style = Style(color="red", blink=True, bold=True)
-    working = True
+    main_table = __create_table()
 
-    while working:
-        console.print()
-        console.print("{:^150}".format(20 * "_" + " Secciones Disponibles " + 20 * "_"))
-        console.print(150 * "=")
-        console.print("||{:^35}".format("LIBROS") +
-              "||{:^35}".format("CLIENTES") +
-              "||{:^35}".format("SOLICITUD") +
-              "||{:^35}".format("SALIR") + "||", style="b")
-        console.print(150 * "=")
+    running = True
+
+    while running:
+        console.print(main_table)
         console.print("\n¿Qué sección deseas visitar?")
-        answer = input().upper()
+        answer = console.input("[cyan]>>> ").upper()
 
         if answer == "LIBROS":
-            # books()
-            pass
+            books(console, library)
+
         elif answer == "CLIENTES":
             # clients()
             pass
@@ -29,12 +48,10 @@ def main_menu() -> None:
             # requests()
             pass
         elif answer == "SALIR":
-            working = False
-        else:
-            console.print(f"Lo siento, '{answer}' no es un comando válido.", style=danger_style)
+            running = False
 
-def options_menu() -> None:
-    pass
+        else:
+            console.print(f"[bright_red]Lo siento, [b]{repr(answer)}[/b] no es un comando válido.")
 
 def main():
     main_menu()

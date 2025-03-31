@@ -38,10 +38,10 @@ class Library:
             )
         )
 
-    def look_for_book(self, isbn: int) -> Book:
+    def look_for_book(self, isbn: int) -> dict[str, int | str]:
         for book in self.book_list:
             if book.isbn == isbn:
-                return book
+                return book.prepare_book()
         raise ValueError(f"No existe libro con el ISBN: {repr(isbn)}")
 
     def save_books(self) -> None:
@@ -49,6 +49,14 @@ class Library:
         for book in self.book_list:
             book_data.append(book.prepare_book())
         FileManager.save_data(book_data, BOOKS_FILENAME)
+
+    def show_books(self) -> list[dict[str, int | str]]:
+        books = []
+        for book in self.book_list:
+            books.append(
+                book.prepare_book()
+            )
+        return books
 
     def load_clients(self) -> None:
         client_file = FileManager.load_data(CLIENTS_FILENAME)
@@ -84,3 +92,4 @@ class Library:
         for client in self.client_list:
             client_data.append(client.prepare_client())
         FileManager.save_data(client_data, CLIENTS_FILENAME)
+

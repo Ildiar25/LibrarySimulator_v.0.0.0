@@ -1,7 +1,7 @@
-
+from interface.cli import main_menu
 
 def main():
-    pass
+    main_menu()
 
 
 if __name__ == '__main__':
