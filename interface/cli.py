@@ -4,6 +4,7 @@ from rich.table import box, Table
 from app.library import Library
 
 from .books import books
+from .clients import clients
 
 
 def __create_table() -> Table:
@@ -42,8 +43,8 @@ def main_menu() -> None:
             books(console, library)
 
         elif answer == "CLIENTES ":
-            # clients()
-            pass
+            clients(console, library)
+
         elif answer == "SOLICITUD":
             # requests()
             pass
