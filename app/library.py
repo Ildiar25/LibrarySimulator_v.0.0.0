@@ -96,3 +96,11 @@ class Library:
         for client in self.client_list:
             client_data.append(client.prepare_client())
         FileManager.save_data(client_data, CLIENTS_FILENAME)
+
+    def show_clients(self) -> list[dict[str, str | int | list[int]]]:
+        clients = []
+        for client in self.client_list:
+            clients.append(
+                client.prepare_client()
+            )
+        return clients

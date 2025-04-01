@@ -42,7 +42,7 @@ def main_menu() -> None:
         if answer == "LIBROS":
             books(console, library)
 
-        elif answer == "CLIENTES ":
+        elif answer == "CLIENTES":
             clients(console, library)
 
         elif answer == "SOLICITUD":

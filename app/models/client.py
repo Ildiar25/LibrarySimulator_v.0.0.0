@@ -11,6 +11,7 @@ class Client:
         :param name: client's name in string format
         :param surname: client's surname in string format
         :param max_allowed: max quantity of books in integer ('3' by default)
+        :param client_books: ISBN book numbers
         """
         self.ident = ident
         self.name = name
