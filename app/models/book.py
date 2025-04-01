@@ -23,21 +23,21 @@ class Book:
         This function updates the book status.
         :return: None
         """
-        self.status = "prestado"
+        self.status = "PRESTADO"
 
     def returned(self) -> None:
         """
         This function updates the book status.
         :return: None
         """
-        self.status = "disponible"
+        self.status = "DISPONIBLE"
 
     def saved(self) -> None:
         """
         This function updates the book status.
         :return: None
         """
-        self.status = "reservado"
+        self.status = "RESERVADO"
 
     def prepare_book(self) -> dict[str, int | str]:
         return {

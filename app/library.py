@@ -113,3 +113,10 @@ class Library:
             )
 
         return clients
+
+    def return_book(self, isbn: int) -> bool:
+        for book in self.book_list:
+            if book.isbn == isbn:
+                book.returned()
+                return True
+        return False

@@ -173,7 +173,7 @@ def __show_clients(console: Console, client_list: list[ClientDict]) -> None:
         table.add_row(
             str(client["ident"]),
             f"{client['name']} {client['surname']}",
-            f"{client['client_books']}"
+            " 📘 ".join([book['title'].upper() for book in client['client_books']])
         )
 
     console.print(table)
