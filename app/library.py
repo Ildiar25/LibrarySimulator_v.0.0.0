@@ -16,6 +16,7 @@ class Library:
         self.client_list: list[Client] = []
 
     def load_books(self) -> None:
+        self.book_list.clear()
         book_file = FileManager.load_data(BOOKS_FILENAME)
         for book_dict in book_file.data:
             book = Book(
@@ -39,9 +40,10 @@ class Library:
         )
 
     def look_for_book(self, isbn: int) -> dict[str, int | str]:
-        for book in self.book_list:
+        for index, book in enumerate(self.book_list):
             if book.isbn == isbn:
-                return book.prepare_book()
+                finded = self.book_list.pop(index)
+                return finded.prepare_book()
         raise ValueError(f"No existe libro con el ISBN: {repr(isbn)}")
 
     def save_books(self) -> None:
@@ -59,6 +61,7 @@ class Library:
         return books
 
     def load_clients(self) -> None:
+        self.client_list.clear()
         client_file = FileManager.load_data(CLIENTS_FILENAME)
         for client_dict in client_file.data:
             client = Client(
@@ -81,15 +84,15 @@ class Library:
             )
         )
 
-    def look_for_client(self, ident: str) -> Client:
-        for client in self.client_list:
+    def look_for_client(self, ident: str) -> dict[str, str | int | list[int]]:
+        for index, client in enumerate(self.client_list):
             if client.ident == ident:
-                return client
-        raise ValueError(f"No existe cliente con IDENT: {repr(ident)}")
+                finded = self.client_list.pop(index)
+                return finded.prepare_client()
+        raise ValueError(f"No existe cliente registrado con el IDENT: {repr(ident)}")
 
     def save_clients(self) -> None:
         client_data = []
         for client in self.client_list:
             client_data.append(client.prepare_client())
         FileManager.save_data(client_data, CLIENTS_FILENAME)
-

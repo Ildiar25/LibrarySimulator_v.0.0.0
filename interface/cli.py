@@ -9,11 +9,11 @@ from .books import books
 def __create_table() -> Table:
     table = Table(width=150, box=box.DOUBLE_EDGE)
 
-    table.title = "____________________ Secciones Disponibles ____________________"
-    table.add_column("LIBROS", style="magenta")
-    table.add_column("CLIENTES", style="magenta")
-    table.add_column("SOLICITUD", style="magenta")
-    table.add_column("SALIR", style="magenta")
+    table.title = "\n\n____________________ Secciones Disponibles ____________________"
+    table.add_column("LIBROS 📚", style="magenta")
+    table.add_column("CLIENTES 👥", style="magenta")
+    table.add_column("SOLICITUD 📰", style="magenta")
+    table.add_column("SALIR ❌", style="magenta")
 
     table.add_row(
         "Permite trabajar en la sección de libros. Puedes añadir, editar o eliminar entradas.",
@@ -41,7 +41,7 @@ def main_menu() -> None:
         if answer == "LIBROS":
             books(console, library)
 
-        elif answer == "CLIENTES":
+        elif answer == "CLIENTES ":
             # clients()
             pass
         elif answer == "SOLICITUD":
