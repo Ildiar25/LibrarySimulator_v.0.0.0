@@ -2,19 +2,21 @@ from rich.console import Console
 from rich.table import box, Table
 
 from app.library import Library
+from shared.utilities import insert_text, insert_option
 
 from .books import books
 from .clients import clients
+from .requests import requests
 
 
 def __create_table() -> Table:
     table = Table(width=150, box=box.DOUBLE_EDGE)
 
     table.title = "\n\n____________________ Secciones Disponibles ____________________"
-    table.add_column("LIBROS 📚", style="magenta")
-    table.add_column("CLIENTES 👥", style="magenta")
-    table.add_column("SOLICITUD 📰", style="magenta")
-    table.add_column("SALIR 👋", style="magenta")
+    table.add_column("(1) LIBROS 📚", style="magenta")
+    table.add_column("(2) CLIENTES 👥", style="magenta")
+    table.add_column("(3) SOLICITUDES 📰", style="magenta")
+    table.add_column("(4) SALIR 👋", style="magenta")
 
     table.add_row(
         "Permite trabajar en la sección de libros. Puedes añadir, editar o eliminar entradas.",
@@ -36,23 +38,19 @@ def main_menu() -> None:
 
     while running:
         console.print(main_table)
-        console.print("\n¿Qué sección deseas visitar?")
-        answer = console.input("[cyan]>>> ").upper()
+        answer = insert_option(console,"\n [cyan]>>>>>[/cyan] ¿Qué sección deseas visitar?", ["1", "2", "3", "4"])
 
-        if answer == "LIBROS":
+        if answer == "1":
             books(console, library)
 
-        elif answer == "CLIENTES":
+        elif answer == "2":
             clients(console, library)
 
-        elif answer == "SOLICITUD":
-            # requests()
-            pass
-        elif answer == "SALIR":
-            running = False
+        elif answer == "3":
+            requests(console, library)
 
-        else:
-            console.print(f"[bright_red]Lo siento, [b]{repr(answer)}[/b] no es un comando válido.")
+        elif answer == "4":
+            running = False
 
 def main():
     main_menu()
