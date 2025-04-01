@@ -56,7 +56,7 @@ def __new_book(console: Console, library: Library) -> None:
 def __update_book(console: Console, library: Library) -> None:
     isbn_list = [book["isbn"] for book in library.show_books()]
 
-    console.print("\n(📘) ~~~~~~~~~~ Editar Libro ~~~~~~~~~~ (📘)", style="italic", justify="center")
+    console.print("\n(✏️) ~~~~~~~~~~ Editar Libro ~~~~~~~~~~ (✏️)", style="italic", justify="center")
     console.print(
         "\nPara modificar un libro de la biblioteca es necesario aportar un número [green][b]ISBN[/b][/green]."
     )
@@ -84,27 +84,37 @@ def __update_book(console: Console, library: Library) -> None:
         while running:
             console.print("\n[cyan] >>>>> [/cyan]¿Qué apartado quieres modificar?")
             console.print(
-                " · 1) TÍTULO\n"
-                " · 2) AUTOR\n"
-                " · 3) GÉNERO\n"
-                " · 4) CANCELAR\n"
+                " · 1) ISBN\n"
+                " · 2) TÍTULO\n"
+                " · 3) AUTOR\n"
+                " · 4) GÉNERO\n"
+                " · 5) CANCELAR\n"
             )
 
-            answer = insert_option(console, "Selecciona una opción", ["1", "2", "3", "4"])
+            answer = insert_option(console, "Selecciona una opción", ["1", "2", "3", "4", "5"])
 
             if answer == "1":
+                new_isbn = insert_number(console, 9)
+                if new_isbn in isbn_list:
+                    console.print("\n[bright_red]¡No se puede cambiar por un ISBN que ya está en uso!\n")
+
+                else:
+                    book["isbn"] = new_isbn
+                    console.print("[green]✔️ ¡ISBN Actualizado!\n")
+
+            elif answer == "2":
                 book["title"] = insert_text(console, 5, 250)
                 console.print("[green]✔️ ¡Título Actualizado!\n")
 
-            elif answer == "2":
+            elif answer == "3":
                 book["author"] = insert_text(console, 5, 150)
                 console.print("[green]✔️ ¡Autor Actualizado!\n")
 
-            elif answer == "3":
+            elif answer == "4":
                 book["genre"] = insert_text(console, 5, 20)
                 console.print("[green]✔️ ¡Género Actualizado!\n")
 
-            elif answer == "4":
+            elif answer == "5":
                 running = False
                 console.print("¡De acuerdo!")
 
@@ -115,7 +125,7 @@ def __update_book(console: Console, library: Library) -> None:
 def __delete_book(console: Console, library: Library) -> None:
     isbn_list = [book["isbn"] for book in library.show_books()]
 
-    console.print("\n(📕) ~~~~~~~~~~ Eliminar Libro ~~~~~~~~~~ (📕)", style="italic", justify="center")
+    console.print("\n(🗑️) ~~~~~~~~~~ Eliminar Libro ~~~~~~~~~~ (🗑️)", style="italic", justify="center")
     console.print(
         "\nPara eliminar un libro de la biblioteca es necesario aportar un número [green][b]ISBN[/b][/green]."
     )
@@ -140,7 +150,7 @@ def __delete_book(console: Console, library: Library) -> None:
         console.print(f"\n¡Perfecto! El libro que deseas eliminar se titula [b]{repr(book['title'])}[/b].")
 
         if book["status"] == "PRESTADO":
-            console.print("[bright_red]No se puede eliminar un libro que no ha sido devuelto.")
+            console.print("[bright_red]>>>>> No se puede eliminar un libro que no ha sido devuelto.")
             return
 
         answer = insert_option(

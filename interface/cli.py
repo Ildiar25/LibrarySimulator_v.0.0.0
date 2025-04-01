@@ -14,7 +14,7 @@ def __create_table() -> Table:
     table.add_column("LIBROS 📚", style="magenta")
     table.add_column("CLIENTES 👥", style="magenta")
     table.add_column("SOLICITUD 📰", style="magenta")
-    table.add_column("SALIR ❌", style="magenta")
+    table.add_column("SALIR 👋", style="magenta")
 
     table.add_row(
         "Permite trabajar en la sección de libros. Puedes añadir, editar o eliminar entradas.",

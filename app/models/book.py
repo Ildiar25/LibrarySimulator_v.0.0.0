@@ -39,7 +39,7 @@ class Book:
         """
         self.status = "reservado"
 
-    def prepare_book(self) -> dict[str, str]:
+    def prepare_book(self) -> dict[str, int | str]:
         return {
             "isbn": self.isbn,
             "title": self.title,

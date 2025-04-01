@@ -2,9 +2,11 @@ from pathlib import Path
 import json
 import os
 
+from shared.types import FileList
+
 
 class FileManager:
-    def __init__(self, data: list[dict[str, str | int | list[int]]] | None = None) -> None:
+    def __init__(self, data: FileList | None = None) -> None:
         self.data = data
 
     @classmethod
@@ -49,7 +51,7 @@ class FileManager:
         return cls(data_dict["data"])
 
     @classmethod
-    def save_data(cls, data: list[dict[str, str | int]], filename: str) -> None:
+    def save_data(cls, data: FileList, filename: str) -> None:
         data_dict = {"data": data}
         try:
             with open(Path(__file__).parent.joinpath(f"database/{filename}"), "w", encoding="utf-8") as data_file:

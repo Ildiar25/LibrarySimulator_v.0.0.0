@@ -51,3 +51,16 @@ def insert_text(console: Console, min_len: int, max_len: int) -> str:
           f"los siguientes símbolos:")
     console.print(f">>> [bright_red][b]{' '.join(SYMBOLS)}[/b][/bright_red] <<<\n")
     return insert_text(console, min_len, max_len)
+
+
+def insert_dni(console: Console) -> str | None:
+    answer = console.input(f"Introduce un número DNI válido ('CANCELAR' para salir): ").upper()
+
+    if answer == "CANCELAR":
+        return None
+
+    if len(answer) == 9 and answer[-1].isalpha():
+        return answer
+
+    console.print(f"[bright_red]Lo siento, {repr(answer)} no es un número de DNI válido.\n")
+    return insert_dni(console)
