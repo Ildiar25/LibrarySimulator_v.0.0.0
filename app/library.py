@@ -120,3 +120,10 @@ class Library:
                 book.returned()
                 return True
         return False
+
+    def lend_book(self, isbn: int) -> bool:
+        for book in self.book_list:
+            if book.isbn == isbn:
+                book.lent()
+                return True
+        return False

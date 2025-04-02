@@ -31,6 +31,8 @@ def __return_book(console: Console, library: Library) -> None:
 
     if not client["client_books"]:
         console.print("Lo siento, este cliente no tiene libros que devolver.")
+        library.add_client(client)
+        library.save_clients()
         return
 
     __show_client_books(console, client)
@@ -63,11 +65,94 @@ def __return_book(console: Console, library: Library) -> None:
 
     console.print("¡De acuerdo!")
 
-# def __lend_book(console: Console, library: Library) -> None:
-#     pass
 
-# def __reserve_book(console: Console, library: Library) -> None:
-#     pass
+def __lend_book(console: Console, library: Library) -> None:
+    isbn_list = [book["isbn"] for book in library.show_books()]
+    ident_list = [client["ident"] for client in library.show_clients()]
+
+    console.print("\n(🟦) ~~~~~~~~~~ Préstamo ~~~~~~~~~~ (🟦)", style="italic", justify="center")
+    console.print(
+        "\nPara realizar un préstamo se deben disponer de los siguientes datos:\n"
+        " · [green][b]DNI[/b][/green] del cliente que solicita la petición\n"
+        " · El [green][b]ISBN[/b][/green] del libro a prestar."
+    )
+
+    console.print("\n[cyan]Primero vamos a seleccionar al cliente mediante su DNI:")
+    ident = insert_dni(console)
+    if ident is None:
+        console.print("¡De acuerdo!")
+        return
+
+    if ident not in ident_list:
+        console.print("\n[bright_red]¡Ese DNI no pertenece a ningún cliente registrado en esta biblioteca!\n")
+        return
+
+    client = __look_for_client(console, library, ident)
+
+    if len(client["client_books"]) == client["max_allowed"]:
+        __show_client_books(console, client)
+        console.print(f"[orange1]Actualmente, {client['name']} dispone del cupo de libros completo y no puede sacar más libros")
+        library.add_client(client)
+        library.save_clients()
+        return
+    __show_books(console, library)
+
+    console.print("\n[cyan]Ahora el ISBN del libro a sacar:")
+    isbn = insert_number(console, 9)
+
+    if isbn is None:
+        console.print("¡De acuerdo!")
+        return
+
+    if isbn not in isbn_list:
+        console.print("\n[bright_red]¡Ese ISBN no pertenece a ningún libro registrado en esta biblioteca!\n")
+        return
+
+    book = __look_for_book(console, library, isbn)
+
+    answer = insert_option(
+        console,
+        f"[cyan] >>>>> [/cyan]¿Quieres sacar {book['title']}?",
+        ["S", "N"]
+    )
+    if answer == "S":
+        client["client_books"].append(book)
+        library.add_client(client)
+        library.save_clients()
+        library.add_book(book)
+        library.lend_book(isbn)
+    else:
+        library.add_book(book)
+
+    library.save_books()
+    console.print("¡De acuerdo!")
+
+
+def __reserve_book(console: Console, library: Library) -> None:
+    isbn_list = [book["isbn"] for book in library.show_books()]
+    ident_list = [client["ident"] for client in library.show_clients()]
+
+    console.print("\n(🟦) ~~~~~~~~~~ Reserva ~~~~~~~~~~ (🟦)", style="italic", justify="center")
+    console.print(
+        "\nPara realizar una reserva se deben disponer de los siguientes datos:\n"
+        " · [green][b]DNI[/b][/green] del cliente que solicita la petición\n"
+        " · El [green][b]ISBN[/b][/green] del libro a reservar."
+    )
+
+    console.print("\n[cyan]Primero vamos a seleccionar al cliente mediante su DNI:")
+    ident = insert_dni(console)
+    if ident is None:
+        console.print("¡De acuerdo!")
+        return
+
+    if ident not in ident_list:
+        console.print("\n[bright_red]¡Ese DNI no pertenece a ningún cliente registrado en esta biblioteca!\n")
+        return
+
+    client = __look_for_client(console, library, ident)
+
+
+
 
 def __show_client_books(console: Console, client: ClientDict) -> None:
     table = Table(width=150, box=box.DOUBLE_EDGE)
@@ -80,6 +165,25 @@ def __show_client_books(console: Console, client: ClientDict) -> None:
             str(book["isbn"]),
             book["title"]
         )
+
+    console.print(table)
+
+def __show_books(console: Console, library: Library) -> None:
+    table = Table(width=150, box=box.DOUBLE_EDGE)
+    table.title = f"\n__________ Libros Disponibles __________"
+    table.add_column("ISBN", style="cyan")
+    table.add_column("TÍTULO")
+    table.add_column("GÉNERO")
+    table.add_column("ESTADO")
+
+    for book in library.show_books():
+        if book["status"] == "DISPONIBLE":
+            table.add_row(
+                str(book["isbn"]),
+                book["title"],
+                book["genre"],
+                book["status"],
+            )
 
     console.print(table)
 
@@ -132,12 +236,10 @@ def requests(console: Console, library: Library) -> None:
             __return_book(console, library)
 
         elif answer == "2":
-            # __lend_book(console, library)
-            pass
+            __lend_book(console, library)
 
         elif answer == "3":
-            # __reserve_book(console, library)
-            pass
+            __reserve_book(console, library)
 
         elif answer == "4":
             running = False

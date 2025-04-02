@@ -2,7 +2,7 @@ from rich.console import Console
 from rich.table import box, Table
 
 from app.library import Library
-from shared.utilities import insert_text, insert_option
+from shared.utilities import insert_option
 
 from .books import books
 from .clients import clients
